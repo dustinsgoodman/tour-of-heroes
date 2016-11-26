@@ -25,8 +25,13 @@ export class HeroService {
                     .catch(this.handleError);
   }
 
-  create(name: string): Observable<Hero> {
-    return this.http.post(this.heroesUrl, JSON.stringify({ name: name }), { headers: this.headers })
+  create(hero: Hero): Observable<Hero> {
+    let payload = JSON.stringify({
+      name: hero.name,
+      power: hero.power,
+      alterEgo: hero.alterEgo
+    });
+    return this.http.post(this.heroesUrl, payload, { headers: this.headers })
                     .map((r: Response) => r.json().data as Hero)
                     .catch(this.handleError);
   }

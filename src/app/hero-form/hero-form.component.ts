@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
+import { HeroService } from '../hero.service';
 import { Hero } from '../hero';
 
 @Component({
@@ -16,17 +18,20 @@ export class HeroFormComponent {
   ];
 
   model: Hero = new Hero(19, 'Supergirl', this.powers[0], 'Kara Danvers');
-
   submitted: boolean = false;
+
+  constructor(
+    private heroService: HeroService,
+    private router: Router
+  ) {}
 
   onSubmit(): void {
     this.submitted = true;
+    this.heroService.create(this.model)
+      .subscribe(() => this.router.navigate(['/heroes']))
   }
 
   newHero(): void {
     this.model = new Hero(42, '', '');
   }
-
-  // TODO: remove when we're done
-  get diagnostic() { return JSON.stringify(this.model) }
 }
